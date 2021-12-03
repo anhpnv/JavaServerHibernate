@@ -14,19 +14,17 @@ public class Server {
         this.port = port;
     }
     public static void main(String[] args) throws Exception{
-        Server server = new Server(3000);
+        Server server = new Server(3200);
         System.out.println("Running");
         server.run();
     }
-    public void run() throws Exception{
+    public void run() throws InterruptedException{
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workGroup = new NioEventLoopGroup();
-//        ManageEmployee manageEmployee = new ManageEmployee();
-//        String[] kk = new String[] {"123"};
-//        manageEmployee.main(kk);
         try{
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class)
+            bootstrap.group(bossGroup, workGroup)
+                    .channel(NioServerSocketChannel.class)
                     .childHandler(new ServerInitializer())
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);

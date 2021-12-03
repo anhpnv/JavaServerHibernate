@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Iterator;
 
 import entity.Employee;
+import io.netty.channel.ChannelHandlerContext;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -12,35 +13,14 @@ import org.hibernate.cfg.Configuration;
 
 public class ManageEmployee {
     private static SessionFactory factory;
-    public static void main(String[] args) {
-
+    public ManageEmployee(){
         try {
             factory = new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);
         }
-
-        ManageEmployee ME = new ManageEmployee();
-
-        /* Add few employee records in database */
-//        Integer empID1 = ME.addEmployee("Zara", "Ali", 1000);
-//        Integer empID2 = ME.addEmployee("Daisy", "Das", 5000);
-//        Integer empID3 = ME.addEmployee("John", "Paul", 10000);
-
-        /* List down all the employees */
-        ME.listEmployees();
-
-        /* Update employee's records */
-//        ME.updateEmployee(empID1, 5000);
-
-        /* Delete an employee from the database */
-//        ME.deleteEmployee(empID2);
-
-        /* List down new list of the employees */
-        ME.listEmployees();
     }
-
     /* Method to CREATE an employee in the database */
     public Integer addEmployee(String fname, String lname, int salary){
         Session session = factory.openSession();
@@ -62,7 +42,7 @@ public class ManageEmployee {
     }
 
     /* Method to  READ all the employees */
-    public void listEmployees( ){
+    public void listEmployees(ChannelHandlerContext ctx){
         Session session = factory.openSession();
         Transaction tx = null;
 
@@ -71,9 +51,8 @@ public class ManageEmployee {
             List employees = session.createQuery("FROM Employee").list();
             for (Iterator iterator = employees.iterator(); iterator.hasNext();){
                 Employee employee = (Employee) iterator.next();
-                System.out.print("First Name: " + employee.getFirstName());
-                System.out.print("  Last Name: " + employee.getLastName());
-                System.out.println("  Salary: " + employee.getSalary());
+                ctx.writeAndFlush(
+                        "First Name: " + employee.getFirstName() + "  Last Name: " + employee.getLastName() + "  Salary: " + employee.getSalary() + "\n");
             }
             tx.commit();
         } catch (HibernateException e) {
