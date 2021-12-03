@@ -8,12 +8,12 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx){
         Channel incoming = ctx.channel();
-        System.out.println("[SERVER] - " + incoming.remoteAddress() + " has joined\n");
+        System.out.println("[Client] - " + incoming.remoteAddress() + " has joined\n");
     }
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx){
         Channel incoming = ctx.channel();
-        System.out.println("[SERVER] - " + incoming.remoteAddress() + " has left\n");
+        System.out.println("[Client] - " + incoming.remoteAddress() + " has left\n");
     }
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String arg1){
