@@ -1,13 +1,12 @@
 package Server;
 
 import Hibernate.ManageEmployee;
-import entity.Employee;
 import io.netty.channel.*;
 
 
 public class ServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
-        public void handlerAdded(ChannelHandlerContext ctx){
+    public void handlerAdded(ChannelHandlerContext ctx){
         Channel incoming = ctx.channel();
         System.out.println("[SERVER] - " + incoming.remoteAddress() + " has joined\n");
     }
