@@ -52,7 +52,11 @@ public class ManageEmployee {
             for (Iterator iterator = employees.iterator(); iterator.hasNext();){
                 Employee employee = (Employee) iterator.next();
                 ctx.writeAndFlush(
-                        "First Name: " + employee.getFirstName() + "  Last Name: " + employee.getLastName() + "  Salary: " + employee.getSalary() + "\n");
+                        "ID: " + employee.getId() +
+                         "  First Name: " + employee.getFirstName() +
+                         "  Last Name: " + employee.getLastName() +
+                         "  Salary: " + employee.getSalary() + "\n"
+                );
             }
             tx.commit();
         } catch (HibernateException e) {
